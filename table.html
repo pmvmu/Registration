@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="styles2.css">
     <link rel="stylesheet" href="footer.css">
+        <script src="https://cdn.emailjs.com/dist/email.min.js"></script> <!-- Email.js library -->
+    <script>
+        (function () {
+            emailjs.init("YOUR_USER_ID"); // Replace with your Email.js user ID
+        })();
+    </script>
 </head>
 <body>
     <header>
@@ -249,22 +255,67 @@ async function exportToPDF() {
             }
         }
 
+            <script>
+        function loadStudents() {
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            const tableBody = document.querySelector('#students-table tbody');
+            tableBody.innerHTML = '';
+
+            students.forEach((student, index) => {
+                const studentID = `mmu00${index + 1}`;
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${studentID}</td>
+                    <td>${student.name}</td>
+                    <td>${student.age}</td>
+                    <td>${student.studentAddress}</td>
+                    <td>${student.studentClass}</td>
+                    <td>${student.studentContact}</td>
+                    <td>${student.studentWhatsapp}</td>
+                    <td><button class="button1" onclick="deleteStudent(${index})">Delete</button></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function deleteStudent(index) {
+            let students = JSON.parse(localStorage.getItem('students')) || [];
+            students.splice(index, 1);
+            localStorage.setItem('students', JSON.stringify(students));
+            loadStudents();
+        }
+
+        async function sendEmail(studentID, studentName, emailAddress) {
+            const templateParams = {
+                id_number: studentID,
+                student_name: studentName,
+                recipient_email: emailAddress,
+            };
+
+            try {
+                const response = await emailjs.send('service_37g2t2w', 'template_o9mdwa3', templateParams);
+                if (response.status === 200) {
+                    console.log('Email sent successfully!');
+                } else {
+                    console.error('Failed to send email:', response);
+                }
+            } catch (error) {
+                console.error('Error sending email:', error);
+            }
+        }
+
         function addStudent(student) {
             let students = JSON.parse(localStorage.getItem('students')) || [];
             students.push(student);
             localStorage.setItem('students', JSON.stringify(students));
             loadStudents();
 
-            // Update Excel Sheet via Power Automate
-            updateExcelSheet({
-                id: `mmu00${students.length}`,
-                name: student.name,
-                age: student.age,
-                address: student.studentAddress,
-                class: student.studentClass,
-                contact: student.studentContact,
-                whatsapp: student.studentWhatsapp,
-            });
+            const studentID = `mmu00${students.length}`;
+            const studentName = student.name;
+            const emailAddress = student.email; // Ensure email address is part of the student data
+            
+            // Send email with the new ID number
+            sendEmail(studentID, studentName, emailAddress);
         }
 
         window.onload = loadStudents;
