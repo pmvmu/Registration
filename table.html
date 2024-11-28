@@ -318,6 +318,24 @@ async function exportToPDF() {
             sendEmail(studentID, studentName, emailAddress);
         }
 
+                function addStudent(student) {
+            let students = JSON.parse(localStorage.getItem('students')) || [];
+            students.push(student);
+            localStorage.setItem('students', JSON.stringify(students));
+            loadStudents();
+
+            // Update Excel Sheet via Power Automate
+            updateExcelSheet({
+                id: `mmu00${students.length}`,
+                name: student.name,
+                age: student.age,
+                address: student.studentAddress,
+                class: student.studentClass,
+                contact: student.studentContact,
+                whatsapp: student.studentWhatsapp,
+            });
+        }
+                      
         window.onload = loadStudents;
     </script>
 
