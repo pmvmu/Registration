@@ -52,7 +52,7 @@
             tableBody.innerHTML = '';
 
             students.forEach((student, index) => {
-                const studentID = `mmu00${index + 1}`;
+                const studentID = `MMU00${index + 1}`;
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${studentID}</td>
@@ -78,7 +78,7 @@
         function exportToExcel() {
             const students = JSON.parse(localStorage.getItem('students')) || [];
             const worksheetData = students.map((student, index) => ({
-                ID: `mmu00${index + 1}`,
+                ID: `MMU00${index + 1}`,
                 Name: student.name,
                 Age: student.age,
                 Address: student.studentAddress,
@@ -171,7 +171,7 @@ async function exportToPDF() {
         function exportToAccess() {
             const students = JSON.parse(localStorage.getItem('students')) || [];
             const csvData = students.map((student, index) => (
-                `"mmu00${index + 1}","${student.name}","${student.age}","${student.studentAddress}","${student.studentClass}","${student.studentContact}","${student.studentWhatsapp}"`
+                `"MMU00${index + 1}","${student.name}","${student.age}","${student.studentAddress}","${student.studentClass}","${student.studentContact}","${student.studentWhatsapp}"`
             )).join("\n");
 
             const csvContent = `ID,Name,Age,Address,Class,Contact Number,WhatsApp Number\n${csvData}`;
@@ -202,7 +202,7 @@ async function exportToPDF() {
                     </thead>
                     <tbody>
                         ${students.map((student, index) => {
-                            const studentID = `mmu00${index + 1}`;
+                            const studentID = `MMU00${index + 1}`;
                             return `
                                 <tr>
                                     <td>${studentID}</td>
@@ -236,7 +236,7 @@ async function exportToPDF() {
         tableBody.innerHTML = '';
         
         students.forEach((student, index) => {
-        const studentID = `mmu00${index + 1}`;
+        const studentID = `MMU00${index + 1}`;
         const row = document.createElement('tr');
         row.innerHTML = `
         <td>${studentID}</td>
@@ -284,7 +284,7 @@ async function exportToPDF() {
         localStorage.setItem('students', JSON.stringify(students));
         loadStudents();
         
-        const studentID = `mmu00${students.length}`;
+        const studentID = `MMU00${students.length}`;
         const studentName = student.name;
         const emailAddress = student.email; // Ensure email address is part of the student data
         
